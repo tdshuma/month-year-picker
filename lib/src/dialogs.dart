@@ -127,7 +127,7 @@ class _MonthYearPickerDialogState extends State<MonthYearPickerDialog> {
     final orientation = MediaQuery.of(context).orientation;
     final offset =
         Theme.of(context).materialTapTargetSize == MaterialTapTargetSize.padded
-            ? const Offset(0.0, 24.0)
+            ? const Offset(0.0, -24.0)
             : Offset.zero;
     switch (orientation) {
       case Orientation.portrait:
@@ -172,7 +172,6 @@ class _MonthYearPickerDialogState extends State<MonthYearPickerDialog> {
 
     final Widget actions = Container(
       alignment: AlignmentDirectional.centerEnd,
-      constraints: const BoxConstraints(minHeight: 52.0),
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: OverflowBar(
         spacing: 8.0,
@@ -265,6 +264,7 @@ class _MonthYearPickerDialogState extends State<MonthYearPickerDialog> {
             : null;
 
         return Stack(
+          fit: StackFit.passthrough,
           children: [
             AnimatedPositioned(
               duration: _dialogSizeAnimationDuration,
@@ -274,7 +274,7 @@ class _MonthYearPickerDialogState extends State<MonthYearPickerDialog> {
               top: _isShowingYear ? 0.0 : -constraints.maxHeight,
               bottom: _isShowingYear ? 0.0 : constraints.maxHeight,
               child: SizedBox(
-                height: constraints.maxHeight,
+                height: constraints.maxHeight + 16,
                 child: YearPicker(
                   key: _yearPickerState,
                   initialDate: _selectedDate,
@@ -296,7 +296,7 @@ class _MonthYearPickerDialogState extends State<MonthYearPickerDialog> {
               top: _isShowingYear ? constraints.maxHeight : 0.0,
               bottom: _isShowingYear ? -constraints.maxHeight : 0.0,
               child: SizedBox(
-                height: constraints.maxHeight,
+                height: constraints.maxHeight + 16,
                 child: MonthPicker(
                   key: _monthPickerState,
                   initialDate: _selectedDate,
@@ -309,66 +309,65 @@ class _MonthYearPickerDialogState extends State<MonthYearPickerDialog> {
                       widget.selectableMonthYearPredicate,
                 ),
               ),
-            )
+            ),
+            // const Padding(padding: EdgeInsets.all(8)),
           ],
         );
       },
     );
 
     final dialogSize = _dialogSize * textScaleFactor;
-    return Directionality(
-      textDirection: direction,
-      child: Dialog(
-        insetPadding: const EdgeInsets.symmetric(
-          horizontal: 16.0,
-          vertical: 24.0,
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: AnimatedContainer(
-          width: dialogSize.width,
-          height: dialogSize.height,
-          duration: _dialogSizeAnimationDuration,
-          curve: Curves.easeIn,
-          child: MediaQuery(
-            data: MediaQuery.of(context).copyWith(
-              textScaleFactor: textScaleFactor,
-            ),
-            child: Builder(
-              builder: (context) {
-                switch (orientation) {
-                  case Orientation.portrait:
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        header,
-                        switcher,
-                        Expanded(child: picker),
-                        actions,
-                      ],
-                    );
-                  case Orientation.landscape:
-                    return Row(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        header,
-                        Flexible(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              switcher,
-                              Expanded(child: picker),
-                              actions,
-                            ],
-                          ),
+    return Dialog(
+      insetPadding: const EdgeInsets.symmetric(
+        horizontal: 16.0,
+        vertical: 24.0,
+      ),
+      clipBehavior: Clip.none,
+      child: AnimatedContainer(
+        width: dialogSize.width - 16,
+        height: dialogSize.height + 16,
+        duration: _dialogSizeAnimationDuration,
+        curve: Curves.easeIn,
+        child: MediaQuery(
+          data: MediaQuery.of(context).copyWith(
+            textScaleFactor: textScaleFactor,
+          ),
+          child: Builder(
+            builder: (context) {
+              switch (orientation) {
+                case Orientation.portrait:
+                  return Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      header,
+                      switcher,
+                      Expanded(child: picker),
+                      actions,
+                    ],
+                  );
+                case Orientation.landscape:
+                  return Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      header,
+                      Flexible(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            switcher,
+                            Expanded(child: picker),
+                            actions,
+                          ],
                         ),
-                      ],
-                    );
-                }
-              },
-            ),
+                      ),
+                    ],
+                  );
+              }
+            },
           ),
         ),
       ),
