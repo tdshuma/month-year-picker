@@ -19,7 +19,7 @@ const _headerPaddingLandscape = 16.0;
 /// [initialDate] is the initially selected month.
 /// [firstDate] is the lower bound for month selection.
 /// [lastDate] is the upper bound for month selection.
-Future<DateTime?> showMonthYearPicker({
+Future<DateTime?> showHealthMonthYearPicker({
   required BuildContext context,
   required DateTime initialDate,
   required DateTime firstDate,

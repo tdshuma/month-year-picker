@@ -79,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
     String? locale,
   }) async {
     final localeObj = locale != null ? Locale(locale) : null;
-    final selected = await showMonthYearPicker(
+    final selected = await showHealthMonthYearPicker(
       context: context,
       initialDate: _selected ?? DateTime.now(),
       firstDate: DateTime(2019),
