@@ -49,7 +49,6 @@ Future<DateTime?> showMonthYearPicker({
     'initialDate $initialDate must be on or before lastDate $lastDate.',
   );
   assert(debugCheckHasMaterialLocalizations(context));
-  assert(debugCheckHasMonthYearPickerLocalizations(context));
   assert(debugCheckHasDirectionality(context));
 
   Widget dialog = MonthYearPickerDialog(
