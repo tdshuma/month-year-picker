@@ -122,6 +122,10 @@ class _MonthYearPickerDialogState extends State<MonthYearPickerDialog> {
   var _canGoNext = false;
   late DateTime _selectedDate = widget.initialDate;
 
+  final okButtonLabel = 'Ok';
+  final cancelButtonLabel = 'Cancel';
+  final helpText = 'Select Month/Year';
+
   // -------------------------------- PROPERTIES -------------------------------
   Size get _dialogSize {
     final orientation = MediaQuery.of(context).orientation;
@@ -151,7 +155,6 @@ class _MonthYearPickerDialogState extends State<MonthYearPickerDialog> {
   @override
   Widget build(BuildContext context) {
     final materialLocalizations = MaterialLocalizations.of(context);
-    final localizations = MonthYearPickerLocalizations.of(context);
     final media = MediaQuery.of(context);
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
@@ -178,11 +181,11 @@ class _MonthYearPickerDialogState extends State<MonthYearPickerDialog> {
         children: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(localizations.cancelButtonLabel),
+            child: Text(cancelButtonLabel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, _selectedDate),
-            child: Text(localizations.okButtonLabel),
+            child: Text(okButtonLabel),
           ),
         ],
       ),
@@ -190,7 +193,7 @@ class _MonthYearPickerDialogState extends State<MonthYearPickerDialog> {
 
     final semanticText = materialLocalizations.formatMonthYear(_selectedDate);
     final header = _Header(
-      helpText: localizations.helpText,
+      helpText: helpText,
       titleText: dateText,
       titleSemanticsLabel: semanticText,
       titleStyle: dateStyle,
